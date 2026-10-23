@@ -1,0 +1,41 @@
+name: Import Finverse project
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    if: github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, '[skip import]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download and verify project snapshot
+        run: |
+          set -euo pipefail
+          url="https://mjvii.com/assets/_import/finverse-import-7c91e4a2.zip"
+          expected="68983902d4db3b3def7c31e64296e06fca6bef49afea5ecae16ba5e8e07aa03e"
+          curl --fail --location --silent --show-error "$url" -o /tmp/finverse.zip
+          actual="$(sha256sum /tmp/finverse.zip | awk '{print $1}')"
+          test "$actual" = "$expected"
+          mkdir -p /tmp/finverse
+          unzip -q /tmp/finverse.zip -d /tmp/finverse
+          rsync -a /tmp/finverse/ ./
+
+      - name: Commit and push project
+        run: |
+          set -euo pipefail
+          git config user.name "Finverse Release Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f .github/workflows/import.yml
+          git add -A
+          git commit -m "Import complete Finverse project [skip import]"
+          git push origin HEAD:main
