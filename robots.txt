@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /track.php
+Disallow: /submit.php
+
+Sitemap: https://mjvii.com/sitemap.xml

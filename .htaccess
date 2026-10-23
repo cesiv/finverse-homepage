@@ -1,0 +1,45 @@
+DirectoryIndex index.html
+
+# 统一入口：https://mjvii.com（强制 HTTPS，去掉 www）
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteRule ^(.*)$ https://mjvii.com/$1 [R=301,L]
+</IfModule>
+
+# 关闭版本号暴露（目录列表在主机侧已关闭，避免 Options 指令在共享主机被禁用）
+<IfModule mod_headers.c>
+  Header unset X-Powered-By
+</IfModule>
+
+<IfModule mod_headers.c>
+  # --- 安全响应头（P0，2026-10-20） ---
+  # HSTS 先给短 max-age 观察，确认全站 HTTPS 正常后再提升到 31536000。
+  Header always set Strict-Transport-Security "max-age=300"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Cross-Origin-Resource-Policy "same-origin"
+  Header always set X-XSS-Protection "0"
+  # CSP：脚本只允许同源与 Cloudflare Web Analytics；样式允许内联 style 属性；
+  # 邮件混淆脚本由 Cloudflare 以 /cdn-cgi/... 同源注入，无需额外放行。
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=3600"
+  </FilesMatch>
+  <FilesMatch "\.(svg|png|jpe?g|webp|ico|woff2?)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+  <FilesMatch "^(track|submit)\.php$">
+    Header set Cache-Control "no-store"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>

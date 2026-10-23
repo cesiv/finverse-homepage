@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="zh-Hans" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finverse 泛思 · A股、港股、美股智能投资研究工具</title>
+<meta name="description" content="Finverse 泛思是一款覆盖 A股、港股、美股的智能投资研究工具。以 FINVERSE 选股框架为核心，提供研究清单、形态识别、组合跟踪与大势研判。所有内容与数据仅供研究参考，不构成投资建议。">
+<meta name="theme-color" content="#0c0b0a">
+<link rel="canonical" href="https://mjvii.com/">
+<meta property="og:title" content="Finverse 泛思 · 智能投资研究平台">
+<meta property="og:description" content="覆盖 A股、港股、美股的投资研究工具：研究清单、形态识别、组合跟踪与大势研判。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mjvii.com/">
+<meta property="og:site_name" content="Finverse 泛思">
+<meta property="og:image" content="https://mjvii.com/assets/img/social-cover.webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Finverse 泛思智能投资研究工作台">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Finverse 泛思 · 智能投资研究平台">
+<meta name="twitter:description" content="把研究做在交易之前。覆盖 A股、港股、美股的研究工作台。">
+<meta name="twitter:image" content="https://mjvii.com/assets/img/social-cover.webp">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<script src="assets/js/boot.js?v=20261020b"></script>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css?v=20261020b">
+</head>
+<body>
+
+<a class="skip" href="#hero" data-i18n="ui.skip">跳到正文</a>
+<noscript><p class="wrap" style="padding:16px 0;color:#e8b96a">你的浏览器禁用了 JavaScript：页面内容仍可阅读，但主题切换、语言切换与试用表单不可用。可发邮件到 xpooqx@qq.com 联系我们。</p></noscript>
+
+<!-- 全屏粒子叙事画布：随滚动在 球体 / 柱群 / 立方 / 地形 / 轨道 / 环 之间形变 -->
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#hero" aria-label="Finverse">
+      <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
+        <circle cx="18" cy="18" r="15.5" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".55"/>
+        <path d="M9.5 24.5 15 18.6l4.6 3.1L26.6 12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="26.6" cy="12" r="3.1" class="mark-dot"/>
+      </svg>
+      <span class="brand-name">Finverse</span>
+    </a>
+
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#product" data-i18n="nav.product">产品能力</a>
+      <a href="#method" data-i18n="nav.method">投资方法</a>
+      <a href="#markets" data-i18n="nav.markets">覆盖市场</a>
+      <a href="market-temperature.html" data-track="nav-temperature" data-i18n="nav.temperature">市场温度</a>
+      <a href="#about" data-i18n="nav.about">关于我们</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="切换深浅色" title="深浅色切换">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.4M12 19.2v2.4M2.4 12h2.4M19.2 12h2.4M5.2 5.2l1.7 1.7M17.1 17.1l1.7 1.7M5.2 18.8l1.7-1.7M17.1 6.9l1.7-1.7"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 14.8A8.7 8.7 0 0 1 9.2 3.4a8.7 8.7 0 1 0 11.4 11.4z"/></svg>
+      </button>
+
+      <div class="lang" role="group" aria-label="语言">
+        <span class="lang-thumb" aria-hidden="true"></span>
+        <button type="button" class="is-active" data-lang="zh" aria-pressed="true"><span data-i18n="ui.langZh">中文</span></button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+
+      <button class="btn btn-primary nav-cta" type="button" data-open-trial data-i18n="cta.trial">免费试用</button>
+
+      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="菜单" aria-expanded="false" aria-controls="mobilePanel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-panel" id="mobilePanel" hidden>
+    <a href="#product" data-i18n="nav.product">产品能力</a>
+    <a href="#method" data-i18n="nav.method">投资方法</a>
+    <a href="#markets" data-i18n="nav.markets">覆盖市场</a>
+    <a href="market-temperature.html" data-track="nav-temperature-m" data-i18n="nav.temperature">市场温度</a>
+    <a href="#about" data-i18n="nav.about">关于我们</a>
+    <button class="btn btn-primary" type="button" data-open-trial data-i18n="cta.trial">免费试用</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- 01 首屏 -->
+  <section class="scene hero" id="hero" data-shape="globe">
+    <div class="wrap hero-inner">
+      <p class="eyebrow rise"><span class="eyebrow-brand">FINVERSE</span><span class="sep">/</span><span data-i18n="hero.eyebrow">智能投资研究平台</span></p>
+      <h1 class="rise" style="--d:1">
+        <span class="l1" data-i18n="hero.h1a">超越平凡</span>
+        <span class="l2" data-i18n="hero.h1b">把研究做在交易之前</span>
+      </h1>
+      <p class="lede rise" style="--d:2" data-i18n="hero.lede">快速评估股票走势，理解市场与板块动态。</p>
+      <div class="hero-cta rise" style="--d:3">
+        <button class="btn btn-primary btn-lg" type="button" data-open-trial data-i18n="cta.trial">免费试用</button>
+        <a class="btn btn-ghost btn-lg" href="#product" data-i18n="cta.explore">了解产品</a>
+      </div>
+    </div>
+
+    <div class="marquee rise" style="--d:4" role="region" aria-label="覆盖市场">
+      <div class="marquee-viewport">
+        <div class="marquee-track" data-marquee>
+          <ul class="marquee-group">
+            <li><a href="https://www.hkex.com.hk/?sc_lang=zh-HK" target="_blank" rel="noopener noreferrer"><b>香港交易所</b><span>HKEX</span></a></li>
+            <li><a href="https://www.sse.com.cn/" target="_blank" rel="noopener noreferrer"><b>上海证券交易所</b><span>SSE</span></a></li>
+            <li><a href="https://www.szse.cn/" target="_blank" rel="noopener noreferrer"><b>深圳证券交易所</b><span>SZSE</span></a></li>
+            <li><a href="https://www.nasdaq.com/" target="_blank" rel="noopener noreferrer"><b>纳斯达克</b><span>NASDAQ</span></a></li>
+            <li><a href="https://www.nyse.com/" target="_blank" rel="noopener noreferrer"><b>纽约证券交易所</b><span>NYSE</span></a></li>
+            <li><a href="https://www.jpx.co.jp/" target="_blank" rel="noopener noreferrer"><b>东京证券交易所</b><span>TSE</span></a></li>
+            <li><a href="https://www.londonstockexchange.com/" target="_blank" rel="noopener noreferrer"><b>伦敦证券交易所</b><span>LSE</span></a></li>
+            <li><a href="https://www.euronext.com/" target="_blank" rel="noopener noreferrer"><b>泛欧交易所</b><span>EURONEXT</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 产品介绍 -->
+  <section class="scene intro" id="intro" data-shape="bars">
+    <div class="wrap split">
+      <div class="split-text">
+        <p class="kicker rise" data-i18n="intro.kicker">产品介绍</p>
+        <h2 class="h2 rise" style="--d:1" data-i18n-html="intro.h2">一套可复核的<em>选股条件</em></h2>
+        <p class="body rise" style="--d:2" data-i18n="intro.p1">Finverse 泛思是一款投资研究工具。它基于 FINVERSE 选股框架，把研究过程拆成可检验的条件与步骤，帮助你评估个股与市场，而不是替你做交易决定。</p>
+        <p class="body rise" style="--d:2" data-i18n="intro.p2">现已支持 A股、港股以及美股市场。想更系统地做研究？立即开启免费试用。</p>
+
+        <dl class="stats rise" style="--d:3">
+          <div><dt data-i18n="intro.s1k">覆盖市场</dt><dd><span data-count="3">0</span></dd></div>
+          <div><dt data-i18n="intro.s2k">研究条件</dt><dd><span data-count="8">0</span></dd></div>
+          <div><dt data-i18n="intro.s3k">温度维度</dt><dd><span data-count="6">0</span></dd></div>
+          <div><dt data-i18n="intro.s4k">复盘频率</dt><dd data-i18n="intro.s4v">每周</dd></div>
+        </dl>
+      </div>
+
+      <div class="split-app rise" style="--d:2">
+        <figure class="app app--dash" data-app="dash" role="img" aria-label="Finverse 网页版研究台"></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 产品能力 -->
+  <section class="scene product" id="product" data-shape="stack">
+    <div class="wrap">
+      <header class="sec-head rise">
+        <p class="kicker" data-i18n="product.kicker">产品能力</p>
+        <h2 class="h2" data-i18n-html="product.h2">从研究到复盘，<em>完整流程</em></h2>
+        <p class="body narrow" data-i18n="product.lede">四个研究环节：筛选条件、观察形态与量能、记录持仓与风险、复盘市场环境。Finverse 把这件事拆成四块能力，每一块都能单独验证。</p>
+      </header>
+
+      <article class="feature rise">
+        <div class="feature-text">
+          <span class="idx">01</span>
+          <h3 data-i18n="f1.h">研究清单 · 条件演示</h3>
+          <p class="body" data-i18n="f1.p">按盈利加速、机构认可与相对强度等条件生成研究清单，展示筛选方法与示例数据，不构成任何个股推荐。</p>
+          <ul class="ticks">
+            <li data-i18n="f1.t1">每周更新研究清单（示例）</li>
+            <li data-i18n="f1.t2">按行业与形态双重聚类</li>
+            <li data-i18n="f1.t3">可导出至自选与提醒</li>
+          </ul>
+        </div>
+        <div class="feature-app"><figure class="app" data-app="rank" role="img" aria-label="研究清单界面"></figure></div>
+      </article>
+
+      <article class="feature rise rev">
+        <div class="feature-text">
+          <span class="idx">02</span>
+          <h3 data-i18n="f2.h">形态识别 · 突破事件提示</h3>
+          <p class="body" data-i18n="f2.p">杯柄、平台整理、双底等经典形态自动标注，并记录突破所需的量能条件，供研究参考，不构成买卖建议。</p>
+          <ul class="ticks">
+            <li data-i18n="f2.t1">自动识别常见价格形态</li>
+            <li data-i18n="f2.t2">突破需成交量确认</li>
+            <li data-i18n="f2.t3">同步标注形态失效条件</li>
+          </ul>
+        </div>
+        <div class="feature-app"><figure class="app" data-app="pattern" role="img" aria-label="形态识别界面"></figure></div>
+      </article>
+
+      <article class="feature rise">
+        <div class="feature-text">
+          <span class="idx">03</span>
+          <h3 data-i18n="f3.h">投资组合 · 持仓研究</h3>
+          <p class="body" data-i18n="f3.p">把成本、盈亏与风险敞口放在同一视图，辅助复盘与研究记录，不提供买卖、建仓或仓位指令。</p>
+          <ul class="ticks">
+            <li data-i18n="f3.t1">成本、盈亏与风险敞口实时联动</li>
+            <li data-i18n="f3.t2">行业与因子暴露分解</li>
+            <li data-i18n="f3.t3">破位预警与持仓体检</li>
+          </ul>
+        </div>
+        <div class="feature-app"><figure class="app" data-app="portfolio" role="img" aria-label="投资组合界面"></figure></div>
+      </article>
+
+      <article class="feature rise rev">
+        <div class="feature-text">
+          <span class="idx">04</span>
+          <h3 data-i18n="f4.h">大势研判 · 市场复盘</h3>
+          <p class="body" data-i18n="f4.p">汇总市场温度、涨跌家数、领涨板块与资金流向，供每周复盘与研究记录，不构成对后市的预测或建议。</p>
+          <ul class="ticks">
+            <li data-i18n="f4.t1">六维市场温度计</li>
+            <li data-i18n="f4.t2">指数与板块强弱对比</li>
+            <li data-i18n="f4.t3">风险偏好变化观察</li>
+          </ul>
+        </div>
+        <div class="feature-app"><figure class="app" data-app="breadth" role="img" aria-label="大势研判界面"></figure></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 04 投资方法 -->
+  <section class="scene method" id="method" data-shape="terrain">
+    <div class="wrap">
+      <header class="sec-head rise">
+        <p class="kicker" data-i18n="method.kicker">我们的投资方法</p>
+        <h2 class="h2" data-i18n-html="method.h2">八个字母，<em>一套纪律</em></h2>
+        <p class="body narrow" data-i18n="method.lede">FINVERSE 框架把「选什么、什么时候买、买多少、什么时候走」拆成八个可检验的条件。任何一支入选标的，都必须在多数维度上同时成立。</p>
+      </header>
+
+      <div class="framework">
+        <article class="fcard rise">
+          <span class="fletter">F</span>
+          <h3 data-i18n="m1.t">Fundamentals 基本面</h3>
+          <p data-i18n="m1.p">盈利加速、利润率扩张，且连续多个季度超预期。</p>
+        </article>
+        <article class="fcard rise" style="--d:1">
+          <span class="fletter">I</span>
+          <h3 data-i18n="m2.t">Institutional 机构认可</h3>
+          <p data-i18n="m2.p">机构持仓数量与比例逐季递增，而非散户拥挤。</p>
+        </article>
+        <article class="fcard rise" style="--d:2">
+          <span class="fletter">N</span>
+          <h3 data-i18n="m3.t">New 新催化剂</h3>
+          <p data-i18n="m3.p">新产品、新管理层、新产能或价格突破带来的新叙事。</p>
+        </article>
+        <article class="fcard rise" style="--d:3">
+          <span class="fletter">V</span>
+          <h3 data-i18n="m4.t">Volume 量能确认</h3>
+          <p data-i18n="m4.p">有效突破必须伴随成交量显著放大，缩量突破一律降权。</p>
+        </article>
+        <article class="fcard rise">
+          <span class="fletter">E</span>
+          <h3 data-i18n="m5.t">Earnings 盈利惊喜</h3>
+          <p data-i18n="m5.p">业绩预告与实际值双超一致预期，并上调全年指引。</p>
+        </article>
+        <article class="fcard rise" style="--d:1">
+          <span class="fletter">R</span>
+          <h3 data-i18n="m6.t">Relative 相对强度</h3>
+          <p data-i18n="m6.p">相对强度排名位于全市场前 15%，是行业中的领涨者。</p>
+        </article>
+        <article class="fcard rise" style="--d:2">
+          <span class="fletter">S</span>
+          <h3 data-i18n="m7.t">Supply 供需格局</h3>
+          <p data-i18n="m7.p">流通盘适中、筹码集中，且无大规模解禁与减持压力。</p>
+        </article>
+        <article class="fcard rise" style="--d:3">
+          <span class="fletter">E</span>
+          <h3 data-i18n="m8.t">Exit 卖出纪律</h3>
+          <p data-i18n="m8.p">明确止损线与止盈条件，规则先于情绪，执行先于判断。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 覆盖市场 -->
+  <section class="scene markets" id="markets" data-shape="orbit">
+    <div class="wrap">
+      <header class="sec-head rise">
+        <p class="kicker" data-i18n="markets.kicker">覆盖市场</p>
+        <h2 class="h2" data-i18n-html="markets.h2">一个账户，<em>三地市场</em></h2>
+        <p class="body narrow" data-i18n="markets.lede">同一套框架，同一套评分口径。A股、港股、美股的研究结论可以直接横向对比，不必在三个工具之间来回切换。</p>
+      </header>
+
+      <div class="market-grid">
+        <article class="market-card rise">
+          <div class="mc-head"><h3>A 股</h3><span class="mc-tag">CN</span></div>
+          <p data-i18n="mk1.p">沪深两市全市场覆盖，包含涨跌停、龙虎榜与北向资金维度。</p>
+          <ul class="mc-list">
+            <li><span data-i18n="mk.list.rows">覆盖标的</span><b data-i18n="mk1.rows">沪深全市场</b></li>
+            <li><span data-i18n="mk.list.freq">更新频率</span><b data-i18n="mk.list.freq.d">每日收盘后</b></li>
+          </ul>
+        </article>
+
+        <article class="market-card rise" style="--d:1">
+          <div class="mc-head"><h3>港股</h3><span class="mc-tag">HK</span></div>
+          <p data-i18n="mk2.p">主板与创业板全覆盖，支持南向资金流向与 AH 溢价对照。</p>
+          <ul class="mc-list">
+            <li><span data-i18n="mk.list.rows">覆盖标的</span><b data-i18n="mk2.rows">主板 + 创业板</b></li>
+            <li><span data-i18n="mk.list.freq">更新频率</span><b data-i18n="mk.list.freq.d">每日收盘后</b></li>
+          </ul>
+        </article>
+
+        <article class="market-card rise" style="--d:2">
+          <div class="mc-head"><h3>美股</h3><span class="mc-tag">US</span></div>
+          <p data-i18n="mk3.p">纽交所与纳斯达克主板，覆盖机构持仓与财报惊喜数据。</p>
+          <ul class="mc-list">
+            <li><span data-i18n="mk.list.rows">覆盖标的</span><b data-i18n="mk3.rows">纽交所 + 纳斯达克</b></li>
+            <li><span data-i18n="mk.list.freq">更新频率</span><b data-i18n="mk.list.freq.n">每日盘前</b></li>
+          </ul>
+        </article>
+      </div>
+
+      <p class="note rise" data-i18n="markets.note">行情数据（如有接入）来自第三方数据供应商，具体来源与延迟以页面标注为准。所有评分与形态结论均由模型生成，仅用于研究参考，不构成投资建议。</p>
+    </div>
+  </section>
+
+  <!-- 06 价值观 -->
+  <section class="scene values" id="values" data-shape="torus">
+    <div class="wrap">
+      <header class="sec-head rise">
+        <p class="kicker" data-i18n="values.kicker">价值观</p>
+        <h2 class="h2" data-i18n-html="values.h2">我们如何<em>做判断</em></h2>
+      </header>
+
+      <div class="value-grid">
+        <article class="vcard rise">
+          <span class="vnum">01</span>
+          <h3 data-i18n="v1.t">数据为先</h3>
+          <p data-i18n="v1.p">每一个结论都可以回溯到原始数据与计算过程，不提供无法验证的观点。</p>
+        </article>
+        <article class="vcard rise" style="--d:1">
+          <span class="vnum">02</span>
+          <h3 data-i18n="v2.t">长期同行</h3>
+          <p data-i18n="v2.p">投资是一场跨越完整周期的长跑，我们陪用户走过回撤，而不只庆祝上涨。</p>
+        </article>
+        <article class="vcard rise" style="--d:2">
+          <span class="vnum">03</span>
+          <h3 data-i18n="v3.t">克制表达</h3>
+          <p data-i18n="v3.p">不承诺暴利，不渲染焦虑。我们只提供可验证的方法与可执行的纪律。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 试用 CTA -->
+  <section class="scene cta-band" id="about" data-shape="globe">
+    <div class="wrap cta-inner rise">
+      <h2 class="h2" data-i18n-html="cta.h2">让下一次研究<em>更有据可依</em></h2>
+      <p class="body" data-i18n="cta.p">专业版 14 天免费试用，无需绑定支付方式。覆盖网页版与移动端。</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg" type="button" data-open-trial data-i18n="cta.trial">免费试用</button>
+        <a class="btn btn-ghost btn-lg" href="mailto:xpooqx@qq.com" data-i18n="cta.contact">联系我们</a>
+      </div>
+      <p class="cta-links">
+        <a href="market-temperature.html" data-track="cta-temperature" data-i18n="cta.tempLink">看市场温度复盘</a>
+        <span class="sep" aria-hidden="true">/</span>
+        <a href="weekly-picks.html" data-track="cta-picks" data-i18n="cta.picksLink">看研究框架公开版</a>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-top">
+    <div class="f-brand">
+      <a class="brand" href="#hero" aria-label="Finverse">
+        <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
+          <circle cx="18" cy="18" r="15.5" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".55"/>
+          <path d="M9.5 24.5 15 18.6l4.6 3.1L26.6 12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="26.6" cy="12" r="3.1" class="mark-dot"/>
+        </svg>
+        <span class="brand-name">Finverse</span>
+      </a>
+      <p data-i18n="footer.tagline">让专业级的投资研究，成为每个人都能使用的工具。</p>
+    </div>
+
+    <nav class="f-cols" aria-label="页脚导航">
+      <div>
+        <h4 data-i18n="footer.col.product">产品</h4>
+        <a href="#product" data-i18n="footer.link.features">产品能力</a>
+        <a href="#method" data-i18n="footer.link.method">投资方法</a>
+        <a href="#markets" data-i18n="footer.link.markets">覆盖市场</a>
+        <a href="market-temperature.html" data-track="footer-temperature" data-i18n="footer.link.temperature">市场温度（公开版）</a>
+        <a href="weekly-picks.html" data-track="footer-picks" data-i18n="footer.link.picks">研究框架（公开版）</a>
+      </div>
+      <div>
+        <h4 data-i18n="footer.col.company">公司</h4>
+        <a href="#values" data-i18n="footer.link.values">价值观</a>
+        <a href="#about" data-i18n="footer.link.about">关于我们</a>
+        <a href="mailto:xpooqx@qq.com" data-i18n="footer.link.join">加入我们</a>
+      </div>
+      <div>
+        <h4 data-i18n="footer.col.support">支持</h4>
+        <a href="mailto:xpooqx@qq.com" data-i18n="footer.link.help">帮助中心</a>
+        <a href="mailto:xpooqx@qq.com" data-i18n="footer.link.feedback">意见反馈</a>
+        <a href="mailto:xpooqx@qq.com" data-i18n="footer.link.status">服务状态</a>
+      </div>
+    </nav>
+
+    <div class="f-contact">
+      <h4 data-i18n="footer.contact">业务合作</h4>
+      <a href="mailto:xpooqx@qq.com">xpooqx@qq.com</a>
+      <p class="f-hours" data-i18n="footer.hours">工作日 9:00 – 18:00</p>
+    </div>
+  </div>
+
+  <div class="wordmark" aria-hidden="true"><span>Finverse</span></div>
+
+  <div class="wrap footer-bottom">
+    <p data-i18n="footer.copy">© 2026 Finverse 泛思。保留所有权利。</p>
+    <p class="disclaimer" data-i18n="footer.disclaimer">投资有风险，入市需谨慎。本页所有内容与数据仅用于研究与产品演示，不构成任何投资建议，也不构成任何证券的买卖要约或招揽。示例数据与历史表现不代表未来收益。</p>
+    <p class="footer-legal">
+      <!-- P0：上线前在此补充运营主体全称、统一社会信用代码、注册地址、客服电话/投诉渠道、ICP 备案号（如适用）。 -->
+      <a href="privacy.html" data-i18n="footer.privacy">隐私政策</a>
+    </p>
+  </div>
+</footer>
+
+<!-- 免费试用 -->
+<div class="modal" id="trialModal" hidden>
+  <div class="modal-backdrop" data-close-trial></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="trialTitle">
+    <button class="modal-x icon-btn" type="button" data-close-trial aria-label="关闭">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="modal-body" id="trialForm">
+      <h3 id="trialTitle" data-i18n="form.title">免费试用</h3>
+      <p class="modal-sub" data-i18n="form.sub">留下联系方式，我们会尽快为你开通 14 天专业版试用。</p>
+      <form id="trialFormEl" novalidate>
+        <label class="field">
+          <span data-i18n="form.name">姓名</span>
+          <input name="name" type="text" autocomplete="name" required>
+        </label>
+        <label class="field">
+          <span data-i18n="form.company">公司</span>
+          <input name="company" type="text" autocomplete="organization">
+        </label>
+        <label class="field">
+          <span data-i18n="form.phone">手机</span>
+          <input name="phone" type="tel" autocomplete="tel" inputmode="tel">
+        </label>
+        <label class="field">
+          <span data-i18n="form.email">邮箱</span>
+          <input name="email" type="email" autocomplete="email">
+        </label>
+        <label class="field field-hp" aria-hidden="true">
+          <span>website</span>
+          <input name="website" type="text" tabindex="-1" autocomplete="off">
+        </label>
+        <p class="field-hint" data-i18n="form.hint">手机和邮箱至少填写一项</p>
+        <label class="consent">
+          <input type="checkbox" name="consent" required>
+          <span data-i18n-html="form.consent">我已阅读并同意<a href="privacy.html" target="_blank" rel="noopener">《隐私政策》</a>，同意 Finverse 为开通试用、联系我而处理上述信息。</span>
+        </label>
+        <label class="consent">
+          <input type="checkbox" name="cross_border" required>
+          <span data-i18n="form.crossBorder">我同意将上述信息提供给邮件服务商处理（可能位于境外），仅用于接收试用开通通知。</span>
+        </label>
+        <p class="field-error" id="trialError" hidden data-i18n="form.error">请填写姓名、至少一项联系方式，并勾选隐私政策与跨境处理同意。</p>
+        <p class="field-error" id="trialFail" hidden data-i18n="form.fail">提交失败，请稍后重试；也可以扫码加微信，或发邮件到 xpooqx@qq.com。</p>
+        <button class="btn btn-primary btn-block btn-lg" type="submit" data-i18n="form.submit">提交申请</button>
+        <div class="wechat" data-wechat hidden>
+          <p class="wechat-or"><span data-i18n="form.or">或</span></p>
+          <div class="wechat-body">
+            <img class="wechat-qr" src="assets/img/wechat-qr.png" alt="微信二维码" width="132" height="132" loading="lazy">
+            <div class="wechat-copy">
+              <p class="wechat-t" data-i18n="form.wechatT">想直接聊？扫码加微信</p>
+              <p class="wechat-p" data-i18n="form.wechatP">备注「试用」，我们会优先处理。</p>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-body modal-done" id="trialDone" hidden>
+      <div class="done-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 12.8 10 17.6l9-11"/></svg>
+      </div>
+      <h3 data-i18n="form.doneTitle">已收到</h3>
+      <p class="modal-sub" data-i18n="form.doneSub">感谢你的信任，我们会在一个工作日内与你联系。</p>
+      <button class="btn btn-ghost btn-block" type="button" data-close-trial data-i18n="form.doneBtn">好的</button>
+      <div class="wechat wechat-inline" data-wechat hidden>
+        <img class="wechat-qr" src="assets/img/wechat-qr.png" alt="微信二维码" width="112" height="112" loading="lazy">
+        <p class="wechat-p" data-i18n="form.wechatDone">扫码加微信，开通更快</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/track.js?v=20261020b"></script>
+<script src="assets/js/i18n.js?v=20261020b"></script>
+<script src="assets/js/scene.js?v=20261020b"></script>
+<script src="assets/js/mockups.js?v=20261020b"></script>
+<script src="assets/js/main.js?v=20261020b"></script>
+</body>
+</html>

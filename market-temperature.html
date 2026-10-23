@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-Hans" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>市场温度复盘 · A股涨跌家数与板块强弱 · Finverse 泛思</title>
+<meta name="description" content="A股市场温度公开页：涨跌家数、涨停跌停、成交额、六维温度评分与领涨板块。页面标注数据日期，仅用于研究参考，不构成投资建议。">
+<meta name="theme-color" content="#0c0b0a">
+<link rel="canonical" href="https://mjvii.com/market-temperature.html">
+<meta property="og:title" content="市场温度复盘 · Finverse 泛思">
+<meta property="og:description" content="涨跌家数、涨停跌停、成交额与六维温度评分；页面标注数据日期，不构成投资建议。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mjvii.com/market-temperature.html">
+<meta property="og:site_name" content="Finverse 泛思">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<script src="assets/js/boot.js?v=20261020b"></script>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css?v=20261020b">
+<link rel="stylesheet" href="assets/css/content.css?v=20261020b">
+</head>
+<body class="doc">
+
+<a class="skip" href="#main">跳到正文</a>
+<noscript><p class="wrap" style="padding:16px 0;color:#e8b96a">你的浏览器禁用了 JavaScript：本页数据无法渲染，请启用后查看，或直接邮件联系 xpooqx@qq.com。</p></noscript>
+
+<header class="c-nav">
+  <div class="wrap c-nav-inner">
+    <a class="brand" href="index.html" aria-label="Finverse">
+      <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
+        <circle cx="18" cy="18" r="15.5" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".55"/>
+        <path d="M9.5 24.5 15 18.6l4.6 3.1L26.6 12" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="26.6" cy="12" r="3.1" class="mark-dot"/>
+      </svg>
+      <span class="brand-name">Finverse</span>
+    </a>
+
+    <nav class="c-links" aria-label="公开页面">
+      <a href="market-temperature.html" class="is-active">市场温度</a>
+      <a href="weekly-picks.html">研究框架</a>
+      <a href="index.html">返回官网</a>
+    </nav>
+
+    <div class="c-actions">
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="切换深浅色" title="深浅色切换">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.4M12 19.2v2.4M2.4 12h2.4M19.2 12h2.4M5.2 5.2l1.7 1.7M17.1 17.1l1.7 1.7M5.2 18.8l1.7-1.7M17.1 6.9l1.7-1.7"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 14.8A8.7 8.7 0 0 1 9.2 3.4a8.7 8.7 0 1 0 11.4 11.4z"/></svg>
+      </button>
+      <a class="btn btn-primary" href="index.html#trial" data-track="doc-cta">免费试用</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap doc-main" id="main">
+  <p class="doc-kicker">Market temperature · <span id="tempMarket">A股</span> · 数据日期 <span id="tempDate">--</span></p>
+  <h1 class="doc-h1">市场温度 · 每日复盘</h1>
+  <p class="doc-lede">把市场环境拆成六个可以打分的维度：趋势、广度、量能、领涨强度、波动率与资金流向。页面会标注数据日期；数据未更新时会明确提示，请勿当作当日行情。</p>
+  <p class="sample-flag" id="sampleFlag" hidden>示例数据 · 当前展示为演示数据，尚未接入实时行情</p>
+  <div class="doc-alert" id="dataStale" role="note" hidden></div>
+
+  <section class="temp-hero">
+    <div class="panel">
+      <div class="gauge">
+        <svg viewBox="0 0 128 128" aria-hidden="true">
+          <circle class="gauge-track" cx="64" cy="64" r="54"></circle>
+          <circle class="gauge-arc" id="gaugeArc" cx="64" cy="64" r="54"></circle>
+        </svg>
+        <div class="gauge-fill">
+          <span class="temp-num" id="tempScore">--</span>
+          <span class="temp-state" id="tempState">加载中</span>
+        </div>
+      </div>
+      <p class="gauge-caption">温度取值 0 到 100，50 为中性</p>
+    </div>
+
+    <div class="panel">
+      <div class="kpi-grid" id="tempKpis"></div>
+<div class="temp-spark" id="tempSpark"></div>
+      <p class="spark-label">最近 5 个交易日温度</p>
+    </div>
+  </section>
+
+  <section class="doc-block">
+    <h2>指数与强弱</h2>
+    <div class="idx-grid" id="tempIndices"></div>
+  </section>
+
+  <section class="doc-block">
+    <h2>六维温度</h2>
+    <div class="dims" id="tempDims"></div>
+  </section>
+
+  <section class="doc-block">
+    <h2>板块温度</h2>
+    <div class="table-scroll">
+      <table class="doc-table">
+        <thead>
+          <tr><th>板块</th><th class="num">涨跌幅</th><th>备注</th></tr>
+        </thead>
+        <tbody id="sectorBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="doc-block">
+    <h2>市场观察</h2>
+    <p class="doc-p" id="tempCommentary"></p>
+    <p class="doc-note">数据日期 <span id="tempUpdated"></span> · 数据为收盘汇总，仅供研究参考，不构成投资建议。</p>
+  </section>
+
+  <aside class="doc-cta">
+    <p><strong>想系统了解市场温度怎么读？</strong><br>研究框架、形态扫描与组合跟踪能力在 Finverse 内提供，14 天免费试用，无需绑定支付方式。</p>
+    <a class="btn btn-primary btn-lg" href="index.html#trial" data-track="doc-cta-temp">免费试用</a>
+    <button class="btn btn-ghost btn-lg" type="button" data-copy-link>复制本页链接</button>
+  </aside>
+</main>
+
+<footer class="c-footer">
+  <div class="wrap">
+    <p class="disclaimer">投资有风险，入市需谨慎。本页所有内容与数据均用于研究参考，不构成任何投资建议。示例数据与历史统计不代表未来收益。</p>
+    <p>© 2026 Finverse 泛思。<a href="index.html">返回官网</a> · <a href="privacy.html">隐私政策</a></p>
+  </div>
+</footer>
+
+<script src="assets/js/track.js?v=20261020b"></script>
+<script src="assets/data/market-temperature.js?v=20261020b"></script>
+<script src="assets/js/content.js?v=20261020b"></script>
+</body>
+</html>

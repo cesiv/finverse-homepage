@@ -1,0 +1,27 @@
+# Local artifacts and operational material
+.codex-artifacts/
+audit/
+content/
+tools/
+_probe_net.php
+
+# Runtime configuration and logs
+finverse-config.php
+finverse-mail-config.php
+finverse-analytics.log*
+finverse-submissions.log*
+.env
+.env.*
+!.env.example
+*.log
+
+# Local tooling
+__pycache__/
+*.py[cod]
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
